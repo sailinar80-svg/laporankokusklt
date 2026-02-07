@@ -36,7 +36,7 @@
             flex-grow: 1;
             padding-left: 10px;
             font-weight: 600;
-            word-break: break-word; /* Memastikan teks panjang pecah baris */
+            word-break: break-word;
         }
         .preview-img-container {
             width: 100%;
@@ -54,6 +54,7 @@
             <h1 class="text-3xl font-bold text-blue-900">Sistem Laporan Kokurikulum Digital</h1>
         </header>
 
+        <!-- Borang Input -->
         <div id="formSection" class="bg-white rounded-xl shadow-lg p-6 mb-8 no-print border border-slate-200">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div class="md:col-span-2">
@@ -73,7 +74,7 @@
                     <input type="text" id="namaGuru" placeholder="Masukkan nama guru" class="w-full p-2 border border-slate-300 rounded">
                 </div>
                 <div class="md:col-span-2">
-                    <label class="block text-sm font-semibold text-slate-700 mb-1">Aktiviti KBAT (Boleh panjang)</label>
+                    <label class="block text-sm font-semibold text-slate-700 mb-1">Aktiviti KBAT</label>
                     <input type="text" id="aktivitiKbat" placeholder="Nyatakan aktiviti KBAT" class="w-full p-2 border border-slate-300 rounded">
                 </div>
                 <div>
@@ -109,6 +110,7 @@
             <button onclick="generateReport()" class="w-full mt-6 bg-blue-900 hover:bg-black text-white font-bold py-4 rounded-lg shadow-md uppercase">Jana Pratonton</button>
         </div>
 
+        <!-- Paparan Pratonton Laporan -->
         <div id="previewSection" class="hidden">
             <div id="printableArea" class="bg-white p-10 shadow-2xl border border-slate-300 report-card mx-auto" style="min-height: 29.7cm; width: 21cm; color: #000;">
                 
@@ -183,6 +185,12 @@
             }
         }
 
+        function formatDate(dateStr) {
+            if(!dateStr) return "";
+            const d = new Date(dateStr);
+            return d.toLocaleDateString('ms-MY', { day: 'numeric', month: 'long', year: 'numeric' });
+        }
+
         function generateReport() {
             const val = (id) => document.getElementById(id).value;
             const unit = val('unitKoku');
@@ -196,7 +204,6 @@
             document.getElementById('viewDateTime').innerText = formatDate(val('tarikh')) + " (" + (val('masa') || 'N/A') + ")";
             document.getElementById('viewAktiviti').innerText = val('aktiviti');
 
-            // Set Warna
             const headerBox = document.getElementById('previewHeaderBox');
             headerBox.className = `text-center mb-6 p-6 rounded-lg transition-colors duration-500 ${colorMap[unit].tailwind}`;
 
@@ -207,12 +214,6 @@
             document.getElementById('formSection').classList.add('hidden');
             document.getElementById('previewSection').classList.remove('hidden');
             window.scrollTo(0,0);
-        }
-
-        function formatDate(dateStr) {
-            if(!dateStr) return "";
-            const d = new Date(dateStr);
-            return d.toLocaleDateString('ms-MY', { day: 'numeric', month: 'long', year: 'numeric' });
         }
 
         function editForm() {
@@ -230,17 +231,19 @@
             btn.disabled = true;
             btn.innerText = "Memproses...";
             status.className = "mt-4 p-4 rounded-lg text-center font-bold block bg-blue-100 text-blue-700";
-            status.innerText = "⏳ Sedang menjana PDF satu halaman...";
+            status.innerText = "⏳ Sedang menghantar laporan...";
 
             const unitValue = document.getElementById('unitKoku').value;
             const config = colorMap[unitValue];
             const guruValue = document.getElementById('namaGuru').value;
+            const kelabValue = document.getElementById('namaKelab').value;
+            const tarikhRaw = document.getElementById('tarikh').value;
             const kbatValue = document.getElementById('aktivitiKbat').value || "-";
+            const masaValue = document.getElementById('masa').value || "N/A";
             
-            // LOGIK DINAMIK: Kira anggaran baris (Nama Guru + KBAT)
-            // Setiap ~80 aksara dianggap 1 baris tambahan
+            // Kira ketinggian dinamik kotak ringkasan
             const charCount = guruValue.length + kbatValue.length;
-            let dynamicHeight = 350; // Tinggi asal kotak ringkasan
+            let dynamicHeight = 350; 
             if (charCount > 100) dynamicHeight = 300;
             if (charCount > 200) dynamicHeight = 250;
             if (charCount > 300) dynamicHeight = 200;
@@ -251,7 +254,7 @@
                 <head>
                     <meta charset="UTF-8">
                     <style>
-                        body { font-family: Arial; padding: 15px; font-size: 10.5pt; line-height: 1.1; margin: 0; }
+                        body { font-family: Arial; padding: 15px; font-size: 10.5pt; line-height: 1.1; margin: 0; color: #000; }
                         .header-box { background-color: ${config.hex} !important; -webkit-print-color-adjust: exact; padding: 15px; text-align: center; border-radius: 8px; margin-bottom: 15px; }
                         .header-box h2 { color: #fff !important; font-size: 22pt; margin: 0; font-weight: bold; }
                         .header-box h1 { color: #fff !important; font-size: 16pt; margin: 5px 0 0; border-top: 1px solid ${config.border}; padding-top: 5px; }
@@ -267,10 +270,10 @@
                 </head>
                 <body>
                     <div class="header-box"><h2>UNIT KOKURIKULUM</h2><h1>${unitValue}</h1></div>
-                    <div class="flex"><span class="label">Kelab/Persatuan:</span><div class="dotted">${document.getElementById('namaKelab').value}</div></div>
+                    <div class="flex"><span class="label">Kelab/Persatuan:</span><div class="dotted">${kelabValue}</div></div>
                     <div class="flex"><span class="label">Nama Guru:</span><div class="dotted">${guruValue}</div></div>
                     <div class="flex"><span class="label">Aktiviti KBAT:</span><div class="dotted">${kbatValue}</div></div>
-                    <div class="flex"><span class="label">Tarikh/Masa:</span><div class="dotted">${formatDate(document.getElementById('tarikh').value)} (${document.getElementById('masa').value})</div></div>
+                    <div class="flex"><span class="label">Tarikh/Masa:</span><div class="dotted">${formatDate(tarikhRaw)} (${masaValue})</div></div>
                     <h4>Ringkasan Aktiviti</h4>
                     <div class="border-box">${document.getElementById('aktiviti').value.replace(/\n/g, '<br>')}</div>
                     <h4>Evidens Aktiviti</h4>
@@ -282,14 +285,26 @@
                 </body>
                 </html>`;
 
+            // Data yang dihantar ke Google Apps Script
+            const payload = {
+                namaGuru: guruValue,
+                unitKoku: unitValue,
+                namaKelab: kelabValue, // Pastikan kunci ini betul
+                tarikh: tarikhRaw,      // Pastikan kunci ini betul
+                reportHtml: pdfTemplate
+            };
+
             try {
-                await fetch(WEB_APP_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({
-                    namaGuru: guruValue, unitKoku: unitValue, reportHtml: pdfTemplate
-                })});
+                await fetch(WEB_APP_URL, { 
+                    method: 'POST', 
+                    mode: 'no-cors', 
+                    body: JSON.stringify(payload)
+                });
                 status.className = "mt-4 p-4 rounded-lg text-center font-bold block bg-green-100 text-green-700";
-                status.innerText = "✅ Berjaya! Laporan tetap dalam 1 halaman.";
-                btn.innerText = "Selesai";
+                status.innerText = "✅ Selesai! Nama fail di Google Drive kini kembali mengikut Nama Kelab.";
+                btn.innerText = "Berjaya";
             } catch (e) {
+                status.className = "mt-4 p-4 rounded-lg text-center font-bold block bg-red-100 text-red-700";
                 status.innerText = "❌ Gagal menghantar.";
                 btn.disabled = false;
             }
