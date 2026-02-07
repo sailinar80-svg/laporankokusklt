@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Penjana Laporan Aktiviti Kokurikulum</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @media print {
+            .no-print { display: none !important; }
+            body { background: white !important; margin: 0; padding: 0; }
+            .report-card { 
+                box-shadow: none !important; 
+                border: none !important; 
+                width: 100% !important; 
+                max-width: none !important;
+                padding: 10mm !important;
+            }
+        }
+        .image-preview {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            object-position: top; /* Memastikan bahagian atas tidak di-crop */
+            border-radius: 8px;
+            border: 2px dashed #cbd5e1;
+        }
+        .report-label {
+            font-weight: bold;
+            color: #000;
+            min-width: 160px;
+            display: inline-block;
+        }
+        .dotted-line {
+            border-bottom: 1px dotted #000;
+            flex-grow: 1;
+            padding-left: 10px;
+            font-weight: 600;
+        }
+        .preview-img-container {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            object-position: top; /* Memastikan bahagian atas tidak di-crop di pratonton */
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body class="bg-slate-100 min-h-screen font-sans">
+
+    <div class="max-w-4xl mx-auto p-4 md:p-8">
+        <header class="mb-8 text-center no-print">
+            <h1 class="text-3xl font-bold text-blue-900">Sistem Laporan Kokurikulum Digital</h1>
+        </header>
+
+        <!-- Borang Input -->
+        <div id="formSection" class="bg-white rounded-xl shadow-lg p-6 mb-8 no-print border border-slate-200">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-semibold text-slate-700 mb-1">Unit Kokurikulum</label>
+                    <select id="unitKoku" class="w-full p-2 bg-slate-50 border border-slate-300 rounded focus:ring-2 focus:ring-blue-500 outline-none">
+                        <option value="KELAB & PERSATUAN">KELAB & PERSATUAN</option>
+                        <option value="SUKAN & PERMAINAN">SUKAN & PERMAINAN</option>
+                        <option value="UNIT BERUNIFORM">UNIT BERUNIFORM</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-slate-700 mb-1">Nama Kelab / Persatuan</label>
+                    <input type="text" id="namaKelab" placeholder="Masukkan nama kelab" class="w-full p-2 border border-slate-300 rounded focus:ring-2 focus:ring-blue-500 outline-none">
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-slate-700 mb-1">Nama Guru</label>
+                    <input type="text" id="namaGuru" placeholder="Masukkan nama guru" class="w-full p-2 border border-slate-300 rounded focus:ring-2 focus:ring-blue-500 outline-none">
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-slate-700 mb-1">Aktiviti KBAT</label>
+                    <input type="text" id="aktivitiKbat" placeholder="Nyatakan aktiviti KBAT" class="w-full p-2 border border-slate-300 rounded focus:ring-2 focus:ring-blue-500 outline-none">
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-slate-700 mb-1">Tarikh & Masa</label>
+                    <div class="flex gap-2">
+                        <input type="date" id="tarikh" class="w-1/2 p-2 border border-slate-300 rounded focus:ring-2 focus:ring-blue-500 outline-none">
+                        <input type="text" id="masa" placeholder="Masa" class="w-1/2 p-2 border border-slate-300 rounded focus:ring-2 focus:ring-blue-500 outline-none">
+                    </div>
+                </div>
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-semibold text-slate-700 mb-1">Ringkasan Aktiviti</label>
+                    <textarea id="aktiviti" rows="5" placeholder="Huraikan ringkasan aktiviti di sini..." class="w-full p-2 border border-slate-300 rounded focus:ring-2 focus:ring-blue-500 outline-none"></textarea>
+                </div>
+                
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-semibold text-slate-700 mb-3">Dokumentasi Bergambar (Wajib 3 Imej)</label>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div onclick="triggerUpload(1)" class="cursor-pointer bg-slate-50 border-2 border-dashed rounded-lg p-2 text-center hover:bg-slate-100 transition">
+                            <input type="file" id="imgInput1" accept="image/*" onchange="previewImage(event, 1)" class="hidden">
+                            <img id="preview1" src="https://via.placeholder.com/300x200?text=Imej+1" class="image-preview">
+                        </div>
+                        <div onclick="triggerUpload(2)" class="cursor-pointer bg-slate-50 border-2 border-dashed rounded-lg p-2 text-center hover:bg-slate-100 transition">
+                            <input type="file" id="imgInput2" accept="image/*" onchange="previewImage(event, 2)" class="hidden">
+                            <img id="preview2" src="https://via.placeholder.com/300x200?text=Imej+2" class="image-preview">
+                        </div>
+                        <div onclick="triggerUpload(3)" class="cursor-pointer bg-slate-50 border-2 border-dashed rounded-lg p-2 text-center hover:bg-slate-100 transition">
+                            <input type="file" id="imgInput3" accept="image/*" onchange="previewImage(event, 3)" class="hidden">
+                            <img id="preview3" src="https://via.placeholder.com/300x200?text=Imej+3" class="image-preview">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button onclick="generateReport()" class="w-full mt-6 bg-blue-900 hover:bg-black text-white font-bold py-4 rounded-lg shadow-md transition uppercase tracking-widest">Jana Pratonton Laporan</button>
+        </div>
+
+        <!-- Paparan Pratonton Laporan -->
+        <div id="previewSection" class="hidden">
+            <div id="printableArea" class="bg-white p-10 shadow-2xl border border-slate-300 report-card mx-auto" style="min-height: 29.7cm; width: 21cm; color: #000;">
+                
+                <div id="previewHeaderBox" class="text-center mb-8 p-6 rounded-lg shadow-inner transition-colors duration-500">
+                    <h2 class="text-4xl font-bold uppercase text-white tracking-tighter">Unit Kokurikulum</h2>
+                    <h1 id="viewUnit" class="text-2xl font-black uppercase mt-2 text-white border-t border-white/30 pt-2"></h1>
+                </div>
+
+                <div class="space-y-3 mb-6 text-base">
+                    <div class="flex items-end">
+                        <span class="report-label">Kelab/Persatuan:</span>
+                        <div id="viewKelab" class="dotted-line"></div>
+                    </div>
+                    <div class="flex items-end">
+                        <span class="report-label">Nama Guru:</span>
+                        <div id="viewNama" class="dotted-line"></div>
+                    </div>
+                    <div class="flex items-end">
+                        <span class="report-label">Aktiviti KBAT:</span>
+                        <div id="viewKbat" class="dotted-line"></div>
+                    </div>
+                    <div class="flex items-end">
+                        <span class="report-label">Tarikh / Masa:</span>
+                        <div id="viewDateTime" class="dotted-line"></div>
+                    </div>
+                </div>
+
+                <div class="mb-6">
+                    <h4 class="font-bold text-lg mb-2">Ringkasan Aktiviti</h4>
+                    <div id="viewAktiviti" class="p-4 border border-black h-[320px] text-justify leading-relaxed whitespace-pre-wrap text-base overflow-hidden"></div>
+                </div>
+
+                <div>
+                    <h4 class="font-bold text-lg mb-3">Evidens Aktiviti</h4>
+                    <div class="grid grid-cols-3 gap-3">
+                        <img id="finalImg1" class="preview-img-container rounded shadow-sm">
+                        <img id="finalImg2" class="preview-img-container rounded shadow-sm">
+                        <img id="finalImg3" class="preview-img-container rounded shadow-sm">
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-8 flex flex-wrap gap-4 no-print pb-20">
+                <button onclick="editForm()" class="px-8 py-3 bg-slate-600 text-white rounded-lg shadow hover:bg-slate-700 transition font-bold">Kembali ke Borang</button>
+                <button id="uploadBtn" onclick="uploadLaporanPenuh()" class="px-8 py-3 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 flex-1 font-bold transition">Hantar PDF ke Drive & Sheet</button>
+            </div>
+
+            <div id="statusMsg" class="hidden mt-4 p-4 rounded-lg text-center font-bold no-print"></div>
+        </div>
+    </div>
+
+    <script>
+        const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxxw3D5SCIjbi_yEz3APBsUhSGI_hPG7iEAm8ptcmBEBKthoYsLRLDIx6bHf4zFhOdrSQ/exec';
+        let imageData = { 1: null, 2: null, 3: null };
+
+        const colorMap = {
+            "SUKAN & PERMAINAN": { tailwind: "bg-green-600", hex: "#16a34a", border: "#4ade80" },
+            "KELAB & PERSATUAN": { tailwind: "bg-purple-600", hex: "#9333ea", border: "#c084fc" },
+            "UNIT BERUNIFORM": { tailwind: "bg-orange-500", hex: "#f97316", border: "#fb923c" }
+        };
+
+        function triggerUpload(i) {
+            document.getElementById(`imgInput${i}`).click();
+        }
+
+        function previewImage(event, index) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    document.getElementById(`preview${index}`).src = e.target.result;
+                    imageData[index] = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function generateReport() {
+            const val = (id) => document.getElementById(id).value;
+            const unit = val('unitKoku');
+            
+            if (!val('namaGuru') || !val('tarikh') || !val('namaKelab')) {
+                return alert("Sila isi Nama Guru, Nama Kelab dan Tarikh.");
+            }
+
+            document.getElementById('viewNama').innerText = val('namaGuru');
+            document.getElementById('viewUnit').innerText = unit;
+            document.getElementById('viewKelab').innerText = val('namaKelab');
+            document.getElementById('viewKbat').innerText = val('aktivitiKbat') || "-";
+            document.getElementById('viewDateTime').innerText = formatDate(val('tarikh')) + " (" + (val('masa') || 'N/A') + ")";
+            document.getElementById('viewAktiviti').innerText = val('aktiviti');
+
+            const headerBox = document.getElementById('previewHeaderBox');
+            headerBox.className = `text-center mb-8 p-6 rounded-lg shadow-inner transition-colors duration-500 ${colorMap[unit].tailwind}`;
+
+            for(let i=1; i<=3; i++) {
+                const targetImg = document.getElementById('finalImg' + i);
+                targetImg.src = imageData[i] || "https://via.placeholder.com/300x200?text=Tiada+Imej";
+            }
+
+            document.getElementById('formSection').classList.add('hidden');
+            document.getElementById('previewSection').classList.remove('hidden');
+            window.scrollTo(0,0);
+        }
+
+        function formatDate(dateStr) {
+            if(!dateStr) return "";
+            const d = new Date(dateStr);
+            return d.toLocaleDateString('ms-MY', { day: 'numeric', month: 'long', year: 'numeric' });
+        }
+
+        function editForm() {
+            document.getElementById('formSection').classList.remove('hidden');
+            document.getElementById('previewSection').classList.add('hidden');
+            
+            const btn = document.getElementById('uploadBtn');
+            btn.disabled = false;
+            btn.innerText = "Hantar PDF ke Drive & Sheet";
+            btn.className = "px-8 py-3 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 flex-1 font-bold transition";
+            
+            const status = document.getElementById('statusMsg');
+            status.classList.add('hidden');
+            status.innerText = "";
+        }
+
+        async function uploadLaporanPenuh() {
+            const btn = document.getElementById('uploadBtn');
+            const status = document.getElementById('statusMsg');
+            
+            btn.disabled = true;
+            btn.innerText = "Memproses...";
+            status.className = "mt-4 p-4 rounded-lg text-center font-bold no-print bg-blue-100 text-blue-700 block";
+            status.innerText = "⏳ Menghantar laporan...";
+
+            const unitValue = document.getElementById('unitKoku').value;
+            const config = colorMap[unitValue];
+            const kelabValue = document.getElementById('namaKelab').value;
+            const guruValue = document.getElementById('namaGuru').value;
+            const kbatValue = document.getElementById('aktivitiKbat').value || "-";
+            const tarikhValue = formatDate(document.getElementById('tarikh').value) + " (" + (document.getElementById('masa').value || 'N/A') + ")";
+            const aktivitiContent = document.getElementById('aktiviti').value.replace(/\n/g, '<br>');
+
+            const pdfTemplate = `
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <meta charset="UTF-8">
+                    <style>
+                        body { font-family: Arial, sans-serif; padding: 15px; color: #000; background-color: white; font-size: 10.5pt; line-height: 1.15; margin: 0; }
+                        .header-box { 
+                            background-color: ${config.hex} !important; 
+                            -webkit-print-color-adjust: exact; 
+                            padding: 15px; 
+                            text-align: center; 
+                            border-radius: 8px; 
+                            margin-bottom: 20px; 
+                        }
+                        .header-box h2 { 
+                            color: #ffffff !important; 
+                            font-size: 22pt; 
+                            margin: 0; 
+                            text-transform: uppercase; 
+                            font-weight: bold; 
+                        }
+                        .header-box h1 { 
+                            color: #ffffff !important; 
+                            font-size: 16pt; 
+                            margin: 8px 0 0 0; 
+                            border-top: 1.5px solid ${config.border}; 
+                            padding-top: 8px; 
+                            text-transform: uppercase; 
+                        }
+                        .flex { display: flex; margin-bottom: 8px; width: 100%; align-items: flex-end; }
+                        .report-label { font-weight: bold; width: 140px; display: inline-block; }
+                        .dotted-line { border-bottom: 1px dotted #000; flex-grow: 1; min-height: 18px; padding-left: 8px; font-weight: bold; }
+                        .border-box { border: 1px solid black; padding: 12px; height: 320px; overflow: hidden; text-align: justify; }
+                        .img-row { width: 100%; margin-top: 15px; text-align: center; }
+                        .img-container { 
+                            width: 31%; 
+                            border: 1.5px solid black; 
+                            height: 160px; 
+                            display: inline-block; 
+                            margin: 0 4px; 
+                            vertical-align: top; 
+                            overflow: hidden; 
+                            border-radius: 5px; 
+                        }
+                        img { 
+                            width: 100%; 
+                            height: 100%; 
+                            object-fit: cover; 
+                            object-position: top; /* Memastikan bahagian atas tidak di-crop dalam PDF */
+                        }
+                        h4 { font-size: 12pt; margin: 15px 0 5px 0; border-bottom: 1px solid black; display: inline-block; font-weight: bold; }
+                    </style>
+                </head>
+                <body>
+                    <div class="header-box">
+                        <h2>UNIT KOKURIKULUM</h2>
+                        <h1>${unitValue}</h1>
+                    </div>
+                    <div class="flex"><span class="report-label">Kelab/Persatuan:</span><div class="dotted-line">${kelabValue}</div></div>
+                    <div class="flex"><span class="report-label">Nama Guru:</span><div class="dotted-line">${guruValue}</div></div>
+                    <div class="flex"><span class="report-label">Aktiviti KBAT:</span><div class="dotted-line">${kbatValue}</div></div>
+                    <div class="flex"><span class="report-label">Tarikh / Masa:</span><div class="dotted-line">${tarikhValue}</div></div>
+                    
+                    <h4>Ringkasan Aktiviti</h4>
+                    <div class="border-box">${aktivitiContent}</div>
+                    
+                    <h4>Evidens Aktiviti</h4>
+                    <div class="img-row">
+                        <div class="img-container">${imageData[1] ? `<img src="${imageData[1]}">` : '<div style="background:#f0f0f0; height:100%;"></div>'}</div>
+                        <div class="img-container">${imageData[2] ? `<img src="${imageData[2]}">` : '<div style="background:#f0f0f0; height:100%;"></div>'}</div>
+                        <div class="img-container">${imageData[3] ? `<img src="${imageData[3]}">` : '<div style="background:#f0f0f0; height:100%;"></div>'}</div>
+                    </div>
+                </body>
+                </html>`;
+
+            const payload = {
+                namaGuru: guruValue,
+                unitKoku: unitValue,
+                namaKelab: kelabValue,
+                tarikh: document.getElementById('tarikh').value,
+                reportHtml: pdfTemplate
+            };
+
+            try {
+                await fetch(WEB_APP_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    body: JSON.stringify(payload)
+                });
+
+                status.className = "mt-4 p-4 rounded-lg text-center font-bold no-print bg-green-100 text-green-700 block";
+                status.innerText = "✅ Selesai! Laporan telah dihantar ke Drive & Sheet (Imej dioptimumkan).";
+                btn.innerText = "Berjaya";
+            } catch (e) {
+                console.error(e);
+                status.className = "mt-4 p-4 rounded-lg text-center font-bold no-print bg-red-100 text-red-700 block";
+                status.innerText = "❌ Gagal menghantar.";
+                btn.disabled = false;
+                btn.innerText = "Cuba Lagi";
+            }
+        }
+    </script>
+</body>
+</html>
