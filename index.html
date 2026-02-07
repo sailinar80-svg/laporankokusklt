@@ -21,7 +21,7 @@
             width: 100%;
             height: 150px;
             object-fit: cover;
-            object-position: top; /* Memastikan bahagian atas tidak di-crop */
+            object-position: top;
             border-radius: 8px;
             border: 2px dashed #cbd5e1;
         }
@@ -36,12 +36,13 @@
             flex-grow: 1;
             padding-left: 10px;
             font-weight: 600;
+            word-break: break-word; /* Memastikan teks panjang pecah baris */
         }
         .preview-img-container {
             width: 100%;
             height: 180px;
             object-fit: cover;
-            object-position: top; /* Memastikan bahagian atas tidak di-crop di pratonton */
+            object-position: top;
             border: 1px solid black;
         }
     </style>
@@ -53,7 +54,6 @@
             <h1 class="text-3xl font-bold text-blue-900">Sistem Laporan Kokurikulum Digital</h1>
         </header>
 
-        <!-- Borang Input -->
         <div id="formSection" class="bg-white rounded-xl shadow-lg p-6 mb-8 no-print border border-slate-200">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div class="md:col-span-2">
@@ -66,84 +66,83 @@
                 </div>
                 <div>
                     <label class="block text-sm font-semibold text-slate-700 mb-1">Nama Kelab / Persatuan</label>
-                    <input type="text" id="namaKelab" placeholder="Masukkan nama kelab" class="w-full p-2 border border-slate-300 rounded focus:ring-2 focus:ring-blue-500 outline-none">
+                    <input type="text" id="namaKelab" placeholder="Masukkan nama kelab" class="w-full p-2 border border-slate-300 rounded">
                 </div>
                 <div>
                     <label class="block text-sm font-semibold text-slate-700 mb-1">Nama Guru</label>
-                    <input type="text" id="namaGuru" placeholder="Masukkan nama guru" class="w-full p-2 border border-slate-300 rounded focus:ring-2 focus:ring-blue-500 outline-none">
+                    <input type="text" id="namaGuru" placeholder="Masukkan nama guru" class="w-full p-2 border border-slate-300 rounded">
                 </div>
-                <div>
-                    <label class="block text-sm font-semibold text-slate-700 mb-1">Aktiviti KBAT</label>
-                    <input type="text" id="aktivitiKbat" placeholder="Nyatakan aktiviti KBAT" class="w-full p-2 border border-slate-300 rounded focus:ring-2 focus:ring-blue-500 outline-none">
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-semibold text-slate-700 mb-1">Aktiviti KBAT (Boleh panjang)</label>
+                    <input type="text" id="aktivitiKbat" placeholder="Nyatakan aktiviti KBAT" class="w-full p-2 border border-slate-300 rounded">
                 </div>
                 <div>
                     <label class="block text-sm font-semibold text-slate-700 mb-1">Tarikh & Masa</label>
                     <div class="flex gap-2">
-                        <input type="date" id="tarikh" class="w-1/2 p-2 border border-slate-300 rounded focus:ring-2 focus:ring-blue-500 outline-none">
-                        <input type="text" id="masa" placeholder="Masa" class="w-1/2 p-2 border border-slate-300 rounded focus:ring-2 focus:ring-blue-500 outline-none">
+                        <input type="date" id="tarikh" class="w-1/2 p-2 border border-slate-300 rounded">
+                        <input type="text" id="masa" placeholder="Masa" class="w-1/2 p-2 border border-slate-300 rounded">
                     </div>
                 </div>
                 <div class="md:col-span-2">
                     <label class="block text-sm font-semibold text-slate-700 mb-1">Ringkasan Aktiviti</label>
-                    <textarea id="aktiviti" rows="5" placeholder="Huraikan ringkasan aktiviti di sini..." class="w-full p-2 border border-slate-300 rounded focus:ring-2 focus:ring-blue-500 outline-none"></textarea>
+                    <textarea id="aktiviti" rows="5" placeholder="Huraikan ringkasan aktiviti di sini..." class="w-full p-2 border border-slate-300 rounded"></textarea>
                 </div>
                 
                 <div class="md:col-span-2">
-                    <label class="block text-sm font-semibold text-slate-700 mb-3">Dokumentasi Bergambar (Wajib 3 Imej)</label>
+                    <label class="block text-sm font-semibold text-slate-700 mb-3">Dokumentasi Bergambar (3 Imej)</label>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div onclick="triggerUpload(1)" class="cursor-pointer bg-slate-50 border-2 border-dashed rounded-lg p-2 text-center hover:bg-slate-100 transition">
+                        <div onclick="triggerUpload(1)" class="cursor-pointer bg-slate-50 border-2 border-dashed rounded-lg p-2 text-center">
                             <input type="file" id="imgInput1" accept="image/*" onchange="previewImage(event, 1)" class="hidden">
                             <img id="preview1" src="https://via.placeholder.com/300x200?text=Imej+1" class="image-preview">
                         </div>
-                        <div onclick="triggerUpload(2)" class="cursor-pointer bg-slate-50 border-2 border-dashed rounded-lg p-2 text-center hover:bg-slate-100 transition">
+                        <div onclick="triggerUpload(2)" class="cursor-pointer bg-slate-50 border-2 border-dashed rounded-lg p-2 text-center">
                             <input type="file" id="imgInput2" accept="image/*" onchange="previewImage(event, 2)" class="hidden">
                             <img id="preview2" src="https://via.placeholder.com/300x200?text=Imej+2" class="image-preview">
                         </div>
-                        <div onclick="triggerUpload(3)" class="cursor-pointer bg-slate-50 border-2 border-dashed rounded-lg p-2 text-center hover:bg-slate-100 transition">
+                        <div onclick="triggerUpload(3)" class="cursor-pointer bg-slate-50 border-2 border-dashed rounded-lg p-2 text-center">
                             <input type="file" id="imgInput3" accept="image/*" onchange="previewImage(event, 3)" class="hidden">
                             <img id="preview3" src="https://via.placeholder.com/300x200?text=Imej+3" class="image-preview">
                         </div>
                     </div>
                 </div>
             </div>
-            <button onclick="generateReport()" class="w-full mt-6 bg-blue-900 hover:bg-black text-white font-bold py-4 rounded-lg shadow-md transition uppercase tracking-widest">Jana Pratonton Laporan</button>
+            <button onclick="generateReport()" class="w-full mt-6 bg-blue-900 hover:bg-black text-white font-bold py-4 rounded-lg shadow-md uppercase">Jana Pratonton</button>
         </div>
 
-        <!-- Paparan Pratonton Laporan -->
         <div id="previewSection" class="hidden">
             <div id="printableArea" class="bg-white p-10 shadow-2xl border border-slate-300 report-card mx-auto" style="min-height: 29.7cm; width: 21cm; color: #000;">
                 
-                <div id="previewHeaderBox" class="text-center mb-8 p-6 rounded-lg shadow-inner transition-colors duration-500">
+                <div id="previewHeaderBox" class="text-center mb-6 p-6 rounded-lg transition-colors duration-500">
                     <h2 class="text-4xl font-bold uppercase text-white tracking-tighter">Unit Kokurikulum</h2>
                     <h1 id="viewUnit" class="text-2xl font-black uppercase mt-2 text-white border-t border-white/30 pt-2"></h1>
                 </div>
 
-                <div class="space-y-3 mb-6 text-base">
-                    <div class="flex items-end">
+                <div class="space-y-2 mb-4 text-base">
+                    <div class="flex items-start">
                         <span class="report-label">Kelab/Persatuan:</span>
                         <div id="viewKelab" class="dotted-line"></div>
                     </div>
-                    <div class="flex items-end">
+                    <div class="flex items-start">
                         <span class="report-label">Nama Guru:</span>
                         <div id="viewNama" class="dotted-line"></div>
                     </div>
-                    <div class="flex items-end">
+                    <div class="flex items-start">
                         <span class="report-label">Aktiviti KBAT:</span>
                         <div id="viewKbat" class="dotted-line"></div>
                     </div>
-                    <div class="flex items-end">
+                    <div class="flex items-start">
                         <span class="report-label">Tarikh / Masa:</span>
                         <div id="viewDateTime" class="dotted-line"></div>
                     </div>
                 </div>
 
-                <div class="mb-6">
+                <div class="mb-4">
                     <h4 class="font-bold text-lg mb-2">Ringkasan Aktiviti</h4>
-                    <div id="viewAktiviti" class="p-4 border border-black h-[320px] text-justify leading-relaxed whitespace-pre-wrap text-base overflow-hidden"></div>
+                    <div id="viewAktiviti" class="p-4 border border-black text-justify leading-relaxed whitespace-pre-wrap text-base overflow-hidden" style="min-height: 100px;"></div>
                 </div>
 
                 <div>
-                    <h4 class="font-bold text-lg mb-3">Evidens Aktiviti</h4>
+                    <h4 class="font-bold text-lg mb-2">Evidens Aktiviti</h4>
                     <div class="grid grid-cols-3 gap-3">
                         <img id="finalImg1" class="preview-img-container rounded shadow-sm">
                         <img id="finalImg2" class="preview-img-container rounded shadow-sm">
@@ -153,16 +152,15 @@
             </div>
 
             <div class="mt-8 flex flex-wrap gap-4 no-print pb-20">
-                <button onclick="editForm()" class="px-8 py-3 bg-slate-600 text-white rounded-lg shadow hover:bg-slate-700 transition font-bold">Kembali ke Borang</button>
-                <button id="uploadBtn" onclick="uploadLaporanPenuh()" class="px-8 py-3 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 flex-1 font-bold transition">Hantar PDF ke Drive & Sheet</button>
+                <button onclick="editForm()" class="px-8 py-3 bg-slate-600 text-white rounded-lg font-bold">Kembali ke Borang</button>
+                <button id="uploadBtn" onclick="uploadLaporanPenuh()" class="px-8 py-3 bg-blue-600 text-white rounded-lg flex-1 font-bold">Hantar PDF</button>
             </div>
-
             <div id="statusMsg" class="hidden mt-4 p-4 rounded-lg text-center font-bold no-print"></div>
         </div>
     </div>
 
     <script>
-        const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxxw3D5SCIjbi_yEz3APBsUhSGI_hPG7iEAm8ptcmBEBKthoYsLRLDIx6bHf4zFhOdrSQ/exec';
+        const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxwLci6naVP9St8RmsRqLX1-lEf1MgHukNTEY0VCYj-PwlHm_W-JNeSPFT7Vk2PHybwsw/exec';
         let imageData = { 1: null, 2: null, 3: null };
 
         const colorMap = {
@@ -171,9 +169,7 @@
             "UNIT BERUNIFORM": { tailwind: "bg-orange-500", hex: "#f97316", border: "#fb923c" }
         };
 
-        function triggerUpload(i) {
-            document.getElementById(`imgInput${i}`).click();
-        }
+        function triggerUpload(i) { document.getElementById(`imgInput${i}`).click(); }
 
         function previewImage(event, index) {
             const file = event.target.files[0];
@@ -191,9 +187,7 @@
             const val = (id) => document.getElementById(id).value;
             const unit = val('unitKoku');
             
-            if (!val('namaGuru') || !val('tarikh') || !val('namaKelab')) {
-                return alert("Sila isi Nama Guru, Nama Kelab dan Tarikh.");
-            }
+            if (!val('namaGuru') || !val('tarikh') || !val('namaKelab')) return alert("Isi Nama Guru, Nama Kelab dan Tarikh.");
 
             document.getElementById('viewNama').innerText = val('namaGuru');
             document.getElementById('viewUnit').innerText = unit;
@@ -202,12 +196,12 @@
             document.getElementById('viewDateTime').innerText = formatDate(val('tarikh')) + " (" + (val('masa') || 'N/A') + ")";
             document.getElementById('viewAktiviti').innerText = val('aktiviti');
 
+            // Set Warna
             const headerBox = document.getElementById('previewHeaderBox');
-            headerBox.className = `text-center mb-8 p-6 rounded-lg shadow-inner transition-colors duration-500 ${colorMap[unit].tailwind}`;
+            headerBox.className = `text-center mb-6 p-6 rounded-lg transition-colors duration-500 ${colorMap[unit].tailwind}`;
 
             for(let i=1; i<=3; i++) {
-                const targetImg = document.getElementById('finalImg' + i);
-                targetImg.src = imageData[i] || "https://via.placeholder.com/300x200?text=Tiada+Imej";
+                document.getElementById('finalImg' + i).src = imageData[i] || "https://via.placeholder.com/300x200?text=Tiada+Imej";
             }
 
             document.getElementById('formSection').classList.add('hidden');
@@ -224,33 +218,32 @@
         function editForm() {
             document.getElementById('formSection').classList.remove('hidden');
             document.getElementById('previewSection').classList.add('hidden');
-            
             const btn = document.getElementById('uploadBtn');
             btn.disabled = false;
-            btn.innerText = "Hantar PDF ke Drive & Sheet";
-            btn.className = "px-8 py-3 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 flex-1 font-bold transition";
-            
-            const status = document.getElementById('statusMsg');
-            status.classList.add('hidden');
-            status.innerText = "";
+            btn.innerText = "Hantar PDF";
+            document.getElementById('statusMsg').classList.add('hidden');
         }
 
         async function uploadLaporanPenuh() {
             const btn = document.getElementById('uploadBtn');
             const status = document.getElementById('statusMsg');
-            
             btn.disabled = true;
             btn.innerText = "Memproses...";
-            status.className = "mt-4 p-4 rounded-lg text-center font-bold no-print bg-blue-100 text-blue-700 block";
-            status.innerText = "⏳ Menghantar laporan...";
+            status.className = "mt-4 p-4 rounded-lg text-center font-bold block bg-blue-100 text-blue-700";
+            status.innerText = "⏳ Sedang menjana PDF satu halaman...";
 
             const unitValue = document.getElementById('unitKoku').value;
             const config = colorMap[unitValue];
-            const kelabValue = document.getElementById('namaKelab').value;
             const guruValue = document.getElementById('namaGuru').value;
             const kbatValue = document.getElementById('aktivitiKbat').value || "-";
-            const tarikhValue = formatDate(document.getElementById('tarikh').value) + " (" + (document.getElementById('masa').value || 'N/A') + ")";
-            const aktivitiContent = document.getElementById('aktiviti').value.replace(/\n/g, '<br>');
+            
+            // LOGIK DINAMIK: Kira anggaran baris (Nama Guru + KBAT)
+            // Setiap ~80 aksara dianggap 1 baris tambahan
+            const charCount = guruValue.length + kbatValue.length;
+            let dynamicHeight = 350; // Tinggi asal kotak ringkasan
+            if (charCount > 100) dynamicHeight = 300;
+            if (charCount > 200) dynamicHeight = 250;
+            if (charCount > 300) dynamicHeight = 200;
 
             const pdfTemplate = `
                 <!DOCTYPE html>
@@ -258,100 +251,47 @@
                 <head>
                     <meta charset="UTF-8">
                     <style>
-                        body { font-family: Arial, sans-serif; padding: 15px; color: #000; background-color: white; font-size: 10.5pt; line-height: 1.15; margin: 0; }
-                        .header-box { 
-                            background-color: ${config.hex} !important; 
-                            -webkit-print-color-adjust: exact; 
-                            padding: 15px; 
-                            text-align: center; 
-                            border-radius: 8px; 
-                            margin-bottom: 20px; 
-                        }
-                        .header-box h2 { 
-                            color: #ffffff !important; 
-                            font-size: 22pt; 
-                            margin: 0; 
-                            text-transform: uppercase; 
-                            font-weight: bold; 
-                        }
-                        .header-box h1 { 
-                            color: #ffffff !important; 
-                            font-size: 16pt; 
-                            margin: 8px 0 0 0; 
-                            border-top: 1.5px solid ${config.border}; 
-                            padding-top: 8px; 
-                            text-transform: uppercase; 
-                        }
-                        .flex { display: flex; margin-bottom: 8px; width: 100%; align-items: flex-end; }
-                        .report-label { font-weight: bold; width: 140px; display: inline-block; }
-                        .dotted-line { border-bottom: 1px dotted #000; flex-grow: 1; min-height: 18px; padding-left: 8px; font-weight: bold; }
-                        .border-box { border: 1px solid black; padding: 12px; height: 320px; overflow: hidden; text-align: justify; }
-                        .img-row { width: 100%; margin-top: 15px; text-align: center; }
-                        .img-container { 
-                            width: 31%; 
-                            border: 1.5px solid black; 
-                            height: 160px; 
-                            display: inline-block; 
-                            margin: 0 4px; 
-                            vertical-align: top; 
-                            overflow: hidden; 
-                            border-radius: 5px; 
-                        }
-                        img { 
-                            width: 100%; 
-                            height: 100%; 
-                            object-fit: cover; 
-                            object-position: top; /* Memastikan bahagian atas tidak di-crop dalam PDF */
-                        }
-                        h4 { font-size: 12pt; margin: 15px 0 5px 0; border-bottom: 1px solid black; display: inline-block; font-weight: bold; }
+                        body { font-family: Arial; padding: 15px; font-size: 10.5pt; line-height: 1.1; margin: 0; }
+                        .header-box { background-color: ${config.hex} !important; -webkit-print-color-adjust: exact; padding: 15px; text-align: center; border-radius: 8px; margin-bottom: 15px; }
+                        .header-box h2 { color: #fff !important; font-size: 22pt; margin: 0; font-weight: bold; }
+                        .header-box h1 { color: #fff !important; font-size: 16pt; margin: 5px 0 0; border-top: 1px solid ${config.border}; padding-top: 5px; }
+                        .flex { display: flex; margin-bottom: 6px; }
+                        .label { font-weight: bold; width: 140px; }
+                        .dotted { border-bottom: 1px dotted #000; flex: 1; font-weight: bold; word-break: break-all; }
+                        .border-box { border: 1px solid black; padding: 10px; height: ${dynamicHeight}px; text-align: justify; overflow: hidden; }
+                        .img-row { width: 100%; margin-top: 10px; text-align: center; }
+                        .img-c { width: 31%; border: 1px solid black; height: 150px; display: inline-block; margin: 0 3px; overflow: hidden; border-radius: 4px; }
+                        img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+                        h4 { font-size: 12pt; margin: 12px 0 5px; border-bottom: 1px solid black; display: inline-block; }
                     </style>
                 </head>
                 <body>
-                    <div class="header-box">
-                        <h2>UNIT KOKURIKULUM</h2>
-                        <h1>${unitValue}</h1>
-                    </div>
-                    <div class="flex"><span class="report-label">Kelab/Persatuan:</span><div class="dotted-line">${kelabValue}</div></div>
-                    <div class="flex"><span class="report-label">Nama Guru:</span><div class="dotted-line">${guruValue}</div></div>
-                    <div class="flex"><span class="report-label">Aktiviti KBAT:</span><div class="dotted-line">${kbatValue}</div></div>
-                    <div class="flex"><span class="report-label">Tarikh / Masa:</span><div class="dotted-line">${tarikhValue}</div></div>
-                    
+                    <div class="header-box"><h2>UNIT KOKURIKULUM</h2><h1>${unitValue}</h1></div>
+                    <div class="flex"><span class="label">Kelab/Persatuan:</span><div class="dotted">${document.getElementById('namaKelab').value}</div></div>
+                    <div class="flex"><span class="label">Nama Guru:</span><div class="dotted">${guruValue}</div></div>
+                    <div class="flex"><span class="label">Aktiviti KBAT:</span><div class="dotted">${kbatValue}</div></div>
+                    <div class="flex"><span class="label">Tarikh/Masa:</span><div class="dotted">${formatDate(document.getElementById('tarikh').value)} (${document.getElementById('masa').value})</div></div>
                     <h4>Ringkasan Aktiviti</h4>
-                    <div class="border-box">${aktivitiContent}</div>
-                    
+                    <div class="border-box">${document.getElementById('aktiviti').value.replace(/\n/g, '<br>')}</div>
                     <h4>Evidens Aktiviti</h4>
                     <div class="img-row">
-                        <div class="img-container">${imageData[1] ? `<img src="${imageData[1]}">` : '<div style="background:#f0f0f0; height:100%;"></div>'}</div>
-                        <div class="img-container">${imageData[2] ? `<img src="${imageData[2]}">` : '<div style="background:#f0f0f0; height:100%;"></div>'}</div>
-                        <div class="img-container">${imageData[3] ? `<img src="${imageData[3]}">` : '<div style="background:#f0f0f0; height:100%;"></div>'}</div>
+                        <div class="img-c">${imageData[1] ? `<img src="${imageData[1]}">` : ''}</div>
+                        <div class="img-c">${imageData[2] ? `<img src="${imageData[2]}">` : ''}</div>
+                        <div class="img-c">${imageData[3] ? `<img src="${imageData[3]}">` : ''}</div>
                     </div>
                 </body>
                 </html>`;
 
-            const payload = {
-                namaGuru: guruValue,
-                unitKoku: unitValue,
-                namaKelab: kelabValue,
-                tarikh: document.getElementById('tarikh').value,
-                reportHtml: pdfTemplate
-            };
-
             try {
-                await fetch(WEB_APP_URL, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    body: JSON.stringify(payload)
-                });
-
-                status.className = "mt-4 p-4 rounded-lg text-center font-bold no-print bg-green-100 text-green-700 block";
-                status.innerText = "✅ Selesai! Laporan telah dihantar ke Drive & Sheet (Imej dioptimumkan).";
-                btn.innerText = "Berjaya";
+                await fetch(WEB_APP_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({
+                    namaGuru: guruValue, unitKoku: unitValue, reportHtml: pdfTemplate
+                })});
+                status.className = "mt-4 p-4 rounded-lg text-center font-bold block bg-green-100 text-green-700";
+                status.innerText = "✅ Berjaya! Laporan tetap dalam 1 halaman.";
+                btn.innerText = "Selesai";
             } catch (e) {
-                console.error(e);
-                status.className = "mt-4 p-4 rounded-lg text-center font-bold no-print bg-red-100 text-red-700 block";
                 status.innerText = "❌ Gagal menghantar.";
                 btn.disabled = false;
-                btn.innerText = "Cuba Lagi";
             }
         }
     </script>
